@@ -174,13 +174,25 @@ npm i
 yarn
 ```
 
-2) Start the app
+2) Start the dev server
 ```
 npm run start
 # or
 pnpm start
 ```
-Choose a target (iOS simulator / Android / Web).
+Choose a target (iOS simulator / Android / Web), or scan the QR code with Expo Go.
+
+### Run on a physical device with Expo Go
+
+1. Install Expo Go on your device:
+   - iOS: App Store — search for "Expo Go"
+   - Android: Google Play — search for "Expo Go"
+2. Ensure your phone and your development machine are on the same Wi‑Fi network.
+3. Start the dev server (see step 2 above).
+4. Scan the QR code printed in your terminal/Expo DevTools:
+   - iOS: Use the Camera app and tap the notification.
+   - Android: Open Expo Go and scan the QR code.
+5. The app will load directly in Expo Go. Edits to the code will hot-reload.
 
 ---
 
