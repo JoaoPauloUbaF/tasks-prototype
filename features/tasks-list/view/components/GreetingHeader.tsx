@@ -7,6 +7,7 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useTasksStore } from '@/features/tasks-list/model/store';
 import { useThemeStore } from '@/features/ui/themeStore';
+import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
 function FilterDropdown() {
   const colorScheme = useColorScheme();
@@ -16,7 +17,9 @@ function FilterDropdown() {
   const [open, setOpen] = React.useState(false);
   const label = filter === 'all' ? 'All' : filter === 'today' ? 'Today' : 'Overdue';
   return (
-    <View style={{ position: 'relative' }}>
+
+    <View
+      style={{ position: 'relative', backgroundColor: 'transparent' }} >
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Filter tasks"
@@ -28,7 +31,8 @@ function FilterDropdown() {
         <FontAwesome name="chevron-down" size={14} color={theme.text} />
       </Pressable>
       {open ? (
-        <View style={[styles.menu, { backgroundColor: theme.surfaceVariant, borderColor: theme.surface }]}>
+        <Animated.View
+          entering={FadeIn} exiting={FadeOut} style={[styles.menu, { backgroundColor: theme.surfaceVariant, borderColor: theme.surface }]}>
           {(['all', 'today', 'overdue'] as const).map((opt) => (
             <Pressable
               key={opt}
@@ -43,7 +47,7 @@ function FilterDropdown() {
               <Text style={styles.menuItemText}>{opt === 'all' ? 'All' : opt === 'today' ? 'Today' : 'Overdue'}</Text>
             </Pressable>
           ))}
-        </View>
+        </Animated.View>
       ) : null}
     </View>
   );

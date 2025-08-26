@@ -30,7 +30,7 @@ if (phase === 'post') {
     // ignore
   }
 
-  // 2) Ensure SPA fallback for GitHub Pages
+// 2) Ensure SPA fallback for GitHub Pages
   const indexPath = path.join(OUT_DIR, 'index.html');
   const notFoundPath = path.join(OUT_DIR, '404.html');
   try {
@@ -41,6 +41,34 @@ if (phase === 'post') {
     // ignore
   }
 
+  // 3) Rewrite absolute asset URLs to relative, so it works under repo subpaths
+  // We rewrite patterns like:
+  //   href="/..." -> href="./..."
+  //   src="/..."  -> src="./..."
+  //   url(/...)   -> url(./...)
+  // and the _expo script as well.
+  const htmlFiles = listFilesRecursively(OUT_DIR, p => p.endsWith('.html'));
+  for (const file of htmlFiles) {
+    try {
+      let content = fs.readFileSync(file, 'utf8');
+      content = content
+        .replace(/href="\//g, 'href="./')
+        .replace(/src="\//g, 'src="./')
+        .replace(/url\(\//g, 'url(./');
+      fs.writeFileSync(file, content);
+    } catch {}
+  }
+
   process.exit(0);
+}
+
+function listFilesRecursively(dir, predicate) {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...listFilesRecursively(p, predicate));
+    else if (!predicate || predicate(p)) out.push(p);
+  }
+  return out;
 }
 

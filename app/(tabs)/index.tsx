@@ -46,10 +46,12 @@ export default function HomeScreen() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
 
+  const inner = { alignSelf: 'center' as const, width: '100%', maxWidth: 900 };
+
   return (
     <RNView style={[styles.container, { backgroundColor: theme.surface }]}>
-      <GreetingHeader greeting="Good morning, Louis!" />
-      <RNView style={styles.tabsContainer}>
+      <GreetingHeader greeting="Good morning, Louis!" style={inner} />
+      <RNView style={[styles.tabsContainer, inner]}>
         <TopTabs.Navigator
           screenOptions={{
             tabBarActiveTintColor: theme.tint,

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, TextInput, Pressable, KeyboardAvoidingView } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@/components/DateTimePicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { router } from 'expo-router';
 
