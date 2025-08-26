@@ -1,7 +1,7 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs, router } from 'expo-router';
-import { Dimensions, Pressable, TouchableOpacity } from 'react-native';
+import { Dimensions, Pressable, TouchableOpacity, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -18,74 +18,83 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
+  const theme = Colors[colorScheme ?? 'light'];
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: false,
-        // useClientOnlyValue(false, true),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
-      />
+    <View style={{ flex: 1 }}>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: theme.tint,
+          headerShown: false,
+          tabBarStyle: {
+            height: 84,
+            paddingHorizontal: 18,
+            backgroundColor: theme.surface,
+            borderTopColor: theme.surfaceVariant,
+            borderTopWidth: 1,
+          },
+          tabBarIconStyle: { marginTop: 12 },
+        }}>
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Home',
+            tabBarIcon: ({ color }) => <FontAwesome name="home" color={color} size={28} />,
+          }}
+        />
 
-      <Tabs.Screen
-        name="my-work"
-        options={{
-          title: 'My Work',
-          tabBarIcon: ({ color }) => <TabBarIcon name="briefcase" color={color} />,
-        }}
-      />
+        <Tabs.Screen
+          name="my-work"
+          options={{
+            title: 'My Work',
+            tabBarIcon: ({ color }) => <FontAwesome name="briefcase" color={color} size={28} />,
+          }}
+        />
 
-      <Tabs.Screen
-        name="add-task"
-        options={{
-          title: 'Add Task',
-          tabBarButton: () => (
-            <TouchableOpacity
-              onPress={() => router.push('/modal')}
-              accessibilityRole="button"
-              style={{
-                width: 75,
-                height: 75,
-                borderRadius: 150,
-                marginTop: -36,
-                backgroundColor: Colors[colorScheme ?? 'light'].tint,
-                alignItems: 'center',
-                justifyContent: 'center',
-                shadowColor: '#000',
-                shadowOpacity: 0.2,
-                shadowRadius: 4,
-                elevation: 6,
-              }}
-            >
-              <FontAwesome name='plus' size={36} color={Colors[colorScheme ?? 'light'].background} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
+        <Tabs.Screen
+          name="add-task"
+          options={{
+            title: 'Add Task',
+            tabBarButton: () => (
+              <TouchableOpacity
+                onPress={() => router.push('/modal')}
+                accessibilityRole="button"
+                style={{
+                  width: 75,
+                  height: 75,
+                  borderRadius: 150,
+                  marginTop: -36,
+                  backgroundColor: Colors[colorScheme ?? 'light'].tint,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  shadowColor: '#000',
+                  shadowOpacity: 0.2,
+                  shadowRadius: 4,
+                  elevation: 6,
+                }}
+              >
+                <FontAwesome name='plus' size={36} color={Colors[colorScheme ?? 'light'].background} />
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="insights"
-        options={{
-          title: 'Insights',
-          tabBarIcon: ({ color }) => <TabBarIcon name="line-chart" color={color} />,
-        }}
-      />
+        <Tabs.Screen
+          name="insights"
+          options={{
+            title: 'Insights',
+            tabBarIcon: ({ color }) => <FontAwesome name="line-chart" color={color} size={28} />,
+          }}
+        />
 
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
-        }}
-      />
-    </Tabs>
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'Profile',
+            tabBarIcon: ({ color }) => <FontAwesome name="user" color={color} size={28} />,
+          }}
+        />
+      </Tabs>
+    </View>
+
   );
 }

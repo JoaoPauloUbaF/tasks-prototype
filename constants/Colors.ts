@@ -7,6 +7,8 @@ export default {
   light: {
     text: '#062b28',
     background: '#ffffff',
+    surface: '#F9FAFB',
+    surfaceVariant: '#ffffff',
     tint: tintColorLight,
     tabIconDefault: '#9fb5b3',
     tabIconSelected: tintColorLight,
@@ -14,6 +16,8 @@ export default {
   dark: {
     text: '#e6fffb',
     background: '#001a19',
+    surface: '#0f1514',
+    surfaceVariant: '#0d1a19',
     tint: tintColorDark,
     tabIconDefault: '#4a6664',
     tabIconSelected: tintColorDark,
