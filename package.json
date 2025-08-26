@@ -7,7 +7,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "export:web": "expo export --platform web",
+    "export:gh": "node ./scripts/gh-pages-post-export.mjs pre && expo export --platform web --output-dir docs --public-url $PUBLIC_URL && node ./scripts/gh-pages-post-export.mjs post"
   },
   "jest": {
     "preset": "jest-expo"
