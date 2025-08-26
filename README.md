@@ -14,6 +14,7 @@ A mobile tasks prototype built with Expo Router and React Native. It focuses on 
 
 This document explains the architecture, important dependencies, and the core logic implemented.
 
+Live Demo: https://joaopauloubaf.github.io/tasks-prototype/
 ## TL;DR
 
 - State/persistence: Zustand + AsyncStorage
