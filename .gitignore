@@ -35,3 +35,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# GitHub Pages/Local worktree
+.gh-pages/
+docs/
