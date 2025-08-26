@@ -1,8 +1,10 @@
 # Tasks Prototype
 
+<img width="300" height="600" alt="Simulator Screenshot - iPhone 16 Pro Max - 2025-08-26 at 13 32 11" src="https://github.com/user-attachments/assets/ee8cfbe8-c1c9-42b1-9931-8f75f232b98d" />
+<img width="300" height="600" alt="Simulator Screenshot - iPhone 16 Pro Max - 2025-08-26 at 13 32 15" src="https://github.com/user-attachments/assets/e1ef3bc8-5fc3-4ff4-8d26-fc9cae955f9f" />
+<img width="300" height="600" alt="Simulator Screenshot - iPhone 16 Pro Max - 2025-08-26 at 13 32 17" src="https://github.com/user-attachments/assets/f7d00832-8292-4b4f-8d24-3439385d2327" />
 
-https://github.com/user-attachments/assets/1a4cc852-13a6-4b3d-bd80-42df1b60560d
-
+https://github.com/user-attachments/assets/668b9cf4-6ff2-4355-b640-265f0d3e7e6f
 
 A mobile tasks prototype built with Expo Router and React Native. It focuses on a clean information hierarchy and fluid interactions:
 
