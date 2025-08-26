@@ -31,6 +31,10 @@ export default function TabLayout() {
             backgroundColor: theme.surface,
             borderTopColor: theme.surfaceVariant,
             borderTopWidth: 1,
+            // Center the bar on wide screens
+            alignSelf: 'center',
+            width: '100%',
+            maxWidth: 900,
           },
           tabBarIconStyle: { marginTop: 12 },
         }}>
