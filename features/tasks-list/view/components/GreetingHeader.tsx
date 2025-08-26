@@ -69,7 +69,7 @@ export default function GreetingHeader({
       <View style={styles.topRow}>
         <Text style={styles.topTitle}>My Work</Text>
         <View style={{ flex: 1 }} />
-        <FontAwesome name="bell" size={20} color={theme.text} style={styles.icon} accessibilityLabel="Notifications" />
+        <FontAwesome name="bell-o" size={20} color={theme.text} style={styles.icon} accessibilityLabel="Notifications" />
         <ThemeToggleIcon />
         <FontAwesome name="history" size={20} color={theme.text} style={styles.icon} accessibilityLabel="History" />
       </View>
