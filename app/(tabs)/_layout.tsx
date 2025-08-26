@@ -19,8 +19,11 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   const theme = Colors[colorScheme ?? 'light'];
+  const pageBg = (colorScheme === 'dark' ? Colors.light.background : Colors.dark.background) as string;
+  const isWide = Dimensions.get('window').width >= 600;
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: pageBg, ...(isWide ? { paddingTop: 64, paddingBottom: 64 } : {}) }}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: theme.tint,

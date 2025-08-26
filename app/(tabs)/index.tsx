@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View as RNView } from 'react-native';
+import { StyleSheet, View as RNView, Dimensions, ViewStyle } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { NavigationIndependentTree } from '@react-navigation/native';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -45,13 +46,19 @@ function NotesScreen() {
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
+  const pageBg = (colorScheme === 'dark' ? Colors.light.background : Colors.dark.background) as string;
 
-  const inner = { alignSelf: 'center' as const, width: '100%', maxWidth: 900 };
+
+  const borderColor = colorScheme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+  const isWide = Dimensions.get('window').width >= 600;
+  const inner = { alignSelf: 'center' as const, width: '100%', maxWidth: 900, } as ViewStyle;
+
 
   return (
-    <RNView style={[styles.container, { backgroundColor: theme.surface }]}>
+    <RNView style={[styles.container, { backgroundColor: pageBg }]}>
       <GreetingHeader greeting="Good morning, Louis!" style={inner} />
-      <RNView style={[styles.tabsContainer, inner]}>
+      <RNView style={[styles.tabsContainer, inner, { backgroundColor: theme.surface }]}>
+        <NavigationIndependentTree>
         <TopTabs.Navigator
           screenOptions={{
             tabBarActiveTintColor: theme.tint,
@@ -65,6 +72,7 @@ export default function HomeScreen() {
           <TopTabs.Screen name="Meetings" component={MeetingsScreen} />
           <TopTabs.Screen name="Notes" component={NotesScreen} />
         </TopTabs.Navigator>
+        </NavigationIndependentTree>
       </RNView>
     </RNView>
   );

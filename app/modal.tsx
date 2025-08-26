@@ -14,6 +14,7 @@ import { buildTask, formatDueDate } from '@/features/tasks-list/model/types';
 export default function ModalScreen() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
+  const pageBg = (colorScheme === 'dark' ? Colors.light.background : Colors.dark.background) as string;
   const setTasks = useTasksStore((s) => s.setTasks);
 
   const [title, setTitle] = useState('');
@@ -61,7 +62,7 @@ export default function ModalScreen() {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.select({ ios: 'padding', android: undefined })} style={styles.container}>
+<KeyboardAvoidingView behavior={Platform.select({ ios: 'padding', android: undefined })} style={[styles.container, { backgroundColor: pageBg }]}>
       <View style={styles.card}>
         <Text style={styles.heading}>Create Task</Text>
 
@@ -105,14 +106,14 @@ export default function ModalScreen() {
               <Text>{dueLabel}</Text>
             </View>
             <View style={{ flex: 1 }} />
-            <Pressable accessibilityRole="button" onPress={() => { setShowDatePicker((s) => !s); setShowTimePicker(false); }} style={[styles.chip, { borderColor: theme.tint }]}> 
+            <Pressable accessibilityRole="button" onPress={() => { setShowDatePicker((s) => !s); setShowTimePicker(false); }} style={[styles.chip, { borderColor: theme.tint }]}>
               <Text style={[styles.chipText, { color: theme.tint }]}>Pick date</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" onPress={() => { setShowTimePicker((s) => !s); setShowDatePicker(false); }} style={[styles.chip, { marginLeft: 8, borderColor: theme.tint }]}> 
+            <Pressable accessibilityRole="button" onPress={() => { setShowTimePicker((s) => !s); setShowDatePicker(false); }} style={[styles.chip, { marginLeft: 8, borderColor: theme.tint }]}>
               <Text style={[styles.chipText, { color: theme.tint }]}>Pick time</Text>
             </Pressable>
             {due ? (
-              <Pressable accessibilityRole="button" onPress={() => setDue(null)} style={[styles.chip, { marginLeft: 8, borderColor: '#b3b3b3' }]}> 
+              <Pressable accessibilityRole="button" onPress={() => setDue(null)} style={[styles.chip, { marginLeft: 8, borderColor: '#b3b3b3' }]}>
                 <Text style={[styles.chipText, { color: '#666' }]}>Clear</Text>
               </Pressable>
             ) : null}
