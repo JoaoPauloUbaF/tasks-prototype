@@ -1,5 +1,9 @@
 # Tasks Prototype
 
+
+https://github.com/user-attachments/assets/1a4cc852-13a6-4b3d-bd80-42df1b60560d
+
+
 A mobile tasks prototype built with Expo Router and React Native. It focuses on a clean information hierarchy and fluid interactions:
 
 - Five bottom tabs (Home, My Work, Add Task, Insights, Profile)
@@ -204,6 +208,11 @@ Choose a target (iOS simulator / Android / Web), or scan the QR code with Expo G
 - Drag-to-reorder with react-native-gesture-handler + Reanimated
 - Add unit tests for controller and store logic (filters, undo buffer)
 - Add E2E smoke tests (Detox or Playwright for web)
+
+## Trade offs
+
+- There were problems with Expo Snack dependencies management, so no Snacks for now
+- Github Pages build done, but buttons don't work if not inside a <Link> Component, so the functions for adding tasks is not working, filtering, and dark mode.
 
 ## Notes & future work
 
