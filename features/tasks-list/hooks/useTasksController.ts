@@ -3,7 +3,7 @@ import { Task } from '../model/types';
 import { useTasksStore } from '../model/store';
 
 export type UseTasksController = {
-  tasks: Task[];
+  tasks: Task[]; // filtered
   completeTask: (id: string) => void;
   undoLast: () => void;
   dismissUndo: () => void;
@@ -11,9 +11,10 @@ export type UseTasksController = {
 };
 
 export function useTasksController(): UseTasksController {
-  const tasks = useTasksStore((s) => s.tasks);
+  const tasksAll = useTasksStore((s) => s.tasks);
   const setTasks = useTasksStore((s) => s.setTasks);
   const seedDefault = useTasksStore((s) => s.seedDefault);
+  const filter = useTasksStore((s) => s.filter);
 
   const [lastCompleted, setLastCompleted] = useState<Task | null>(null);
   const undoBuffer = useRef<{ task: Task; index: number } | null>(null);
@@ -56,6 +57,19 @@ export function useTasksController(): UseTasksController {
     setLastCompleted(null);
     undoBuffer.current = null;
   }, []);
+
+  const tasks = useMemo(() => {
+    if (filter === 'all') return tasksAll;
+    if (filter === 'overdue') return tasksAll.filter((t) => t.metadata.overdue);
+    if (filter === 'today') {
+      const now = new Date();
+      const y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+      const start = new Date(y, m, d).getTime();
+      const end = new Date(y, m, d + 1).getTime();
+      return tasksAll.filter((t) => typeof t.metadata.dueAt === 'number' && t.metadata.dueAt! >= start && t.metadata.dueAt! < end);
+    }
+    return tasksAll;
+  }, [tasksAll, filter]);
 
   return useMemo(
     () => ({ tasks, completeTask, undoLast, dismissUndo, lastCompleted }),

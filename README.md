@@ -1,0 +1,201 @@
+# Tasks Prototype
+
+A mobile tasks prototype built with Expo Router and React Native. It focuses on a clean information hierarchy and fluid interactions:
+
+- Five bottom tabs (Home, My Work, Add Task, Insights, Profile)
+- Home includes a greeting header and a Material Top Tab Navigator (Tasks, Reminders, Meetings, Notes)
+- A Tasks feature with creation modal, animated list, filtering, undo toast, and persistent storage
+
+This document explains the architecture, important dependencies, and the core logic implemented.
+
+## TL;DR
+
+- State/persistence: Zustand + AsyncStorage
+- Navigation: Expo Router + React Navigation (Material Top Tabs)
+- Animations: Reanimated (enter/exit and layout transitions)
+- Theming: custom color palette, light/dark toggle with a small zustand store
+- Accessibility: labeled controls for filter and theme toggle; button roles throughout
+
+---
+
+## Project structure
+
+```
+app/
+  _layout.tsx               # Root stack (modal) + theme provider
+  (tabs)/_layout.tsx        # Bottom tabs config
+  (tabs)/index.tsx          # Home screen + top tabs
+  modal.tsx                 # Task creation form (date & time pickers)
+components/
+  Themed.tsx                # Themed Text and View convenience wrappers
+  useColorScheme.ts(.web)   # Reads theme override store or OS preference
+constants/Colors.ts         # Palette (text/background + surface/surfaceVariant + tint)
+features/
+  tasks-list/
+    model/
+      types.ts              # Task model and helpers
+      store.ts              # Zustand store + AsyncStorage persistence + filter state
+    hooks/
+      useTasksController.ts # UI-agnostic business logic for tasks
+    view/
+      TaskList.tsx          # Renders tasks list + undo toast (UI layer)
+      components/
+        GreetingHeader.tsx  # Header: My Work row + greeting + filter + theme toggle
+        TaskItem.tsx        # List row with enter/exit animations
+  ui/
+    themeStore.ts           # Theme override (system/light/dark)
+```
+
+The “feature-first” layout keeps business logic and data structures under `features/tasks-list/model` and `hooks`, while view components live under `features/tasks-list/view`.
+
+---
+
+## Important dependencies
+
+- expo-router: File-based routing (tabs + modal)
+- @react-navigation/material-top-tabs: Top tabs inside Home
+- zustand: App state (tasks, filter, theme override)
+- @react-native-async-storage/async-storage: Persistence for tasks and filter
+- react-native-reanimated: Row enter/exit + layout animations, and timed progress bar for Undo
+- @react-native-community/datetimepicker: Date/time input in the creation modal
+
+---
+
+## Color palette and theming
+
+`constants/Colors.ts` defines the palette for both modes:
+- primary tint: `#064148`
+- surface (light): `#F9FAFB`
+- surfaceVariant (light): `#FFFFFF`
+- Dark equivalents for surface/surfaceVariant
+
+The bottom tab bar, header background, and Home container use `surface`. Cards use `surfaceVariant` with a subtle `surface` border.
+
+### Theme override
+
+- `features/ui/themeStore.ts` stores an override (`system` | `light` | `dark`).
+- `components/useColorScheme.ts` consumes the override; if `system`, it falls back to the React Native color scheme.
+- The header exposes a moon/sun icon to toggle the theme.
+
+---
+
+## Tasks domain model
+
+`features/tasks-list/model/types.ts`
+- Task
+  - id: string
+  - title: string
+  - metadata:
+    - contextLabel?: string
+    - dueAt?: number (epoch millis)
+    - dueDateFormatted?: string (localized)
+    - overdue: boolean
+- Helpers
+  - formatDueDate(Date) -> string: Localized concise date/time string
+  - buildTask(params) -> Task: Normalizes inputs and precomputes metadata (dueAt, overdue, formatted date)
+
+---
+
+## Store (logic)
+
+`features/tasks-list/model/store.ts`
+- Persistence via AsyncStorage with zustand `persist`
+- State
+  - tasks: Task[] (persisted)
+  - filter: `all | today | overdue` (persisted)
+- Actions
+  - setTasks(updater): Value or producer to replace the `tasks` array
+  - setFilter(f): Updates the current filter
+  - seedDefault(): Development helper to populate the store if empty
+
+The store is intentionally minimal; most interactions flow through the controller.
+
+---
+
+## Controller (logic)
+
+`features/tasks-list/hooks/useTasksController.ts`
+
+This hook is the single place where list logic lives. It is UI-agnostic: it doesn’t import view components and can be unit-tested in isolation.
+
+- Derived data
+  - `tasks`: filtered view of the stored tasks
+    - `all`: no filter
+    - `today`: `dueAt` is within [start-of-today, end-of-today)
+    - `overdue`: `metadata.overdue === true`
+
+- Actions
+  - `completeTask(id)`
+    - Removes the task from the list and stores it in an internal buffer
+    - Exposes `lastCompleted` so the UI can render an undo toast
+  - `undoLast()`
+    - Reinserts the buffered task back at the original index
+  - `dismissUndo()`
+    - Clears `lastCompleted` and drops the buffer
+
+- Lifecycle
+  - `seedDefault()` is invoked once on mount to ensure there is demo data the first time.
+
+---
+
+## Interactions and animations (overview)
+
+- Row enter/exit
+  - New items enter with `SlideInRight(280ms)` and layout spring
+  - Completed items exit with `SlideOutLeft(400ms)` and the list reflows via layout animation
+
+- Undo toast
+  - Appears at the bottom, with a 7s progress bar (Reanimated `withTiming`)
+  - `runOnJS` safely calls `dismissUndo()` when the timer completes
+  - Tapping Undo cancels the progress animation and restores the task
+
+- Filtering
+  - A dropdown in the header (All/Today/Overdue) updates `store.filter`
+  - The controller returns a filtered list based on this state
+
+---
+
+## Creating tasks
+
+- Open the modal via the center plus button in the bottom tab bar
+- Form fields: title (required), context label (optional), date and time pickers
+- On submit, a Task is built with `buildTask` and inserted at the top of the list. The new item animates in.
+
+---
+
+## Running the project
+
+1) Install dependencies
+```
+pnpm i
+# or
+npm i
+# or
+yarn
+```
+
+2) Start the app
+```
+npm run start
+# or
+pnpm start
+```
+Choose a target (iOS simulator / Android / Web).
+
+---
+
+## Notes & future work
+
+- Drag-to-reorder: best implemented with `react-native-gesture-handler` + Reanimated for a smooth long-press drag. A keyboard-accessible fallback (Move up/down actions) can be added for screen readers.
+- Accessibility: The filter dropdown and theme toggle have accessibility labels; more explicit labels can be added for task actions (e.g., “Complete task {title}”).
+- Data: Calls to a backend can be introduced behind the store/controller interfaces without affecting views.
+
+---
+
+## Why this architecture?
+
+- Feature-first: keeps related model, controller, and views in one place.
+- Store vs controller: persistence/state and UI behavior are separated, enabling simpler unit tests and safer refactors.
+- Expo Router: easy nested navigation (tabs + modal) with file-based conventions.
+- Reanimated: efficient animations and worklet-safe timing for the undo progress.
+

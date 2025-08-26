@@ -1,6 +1,7 @@
 export type TaskMetadata = {
   contextLabel?: string;
   dueDateFormatted?: string; // e.g., "Tue, 26 Aug"
+  dueAt?: number; // epoch millis
   overdue: boolean;
 };
 
@@ -42,6 +43,7 @@ export function buildTask(
     metadata: {
       contextLabel: params.contextLabel,
       dueDateFormatted: due ? formatDueDate(due) : undefined,
+      dueAt: due ? due.getTime() : undefined,
       overdue,
     },
   };

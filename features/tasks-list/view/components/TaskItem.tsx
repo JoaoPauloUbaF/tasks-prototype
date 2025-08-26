@@ -21,9 +21,7 @@ export default function TaskItem({ task, onComplete }: { task: Task; onComplete:
       style={styles.cardWrap}
     >
       <View style={[styles.card, { backgroundColor: theme.surfaceVariant ?? 'rgba(0,0,0,0.03)', borderColor: theme.surface, borderWidth: 1 }]}>
-        <View style={styles.leftTick}
-          accessibilityElementsHidden
-        />
+        <FontAwesome name='check' size={18} color={'#9D8CF5'} style={styles.leftTick} />
         <View style={styles.content}>
           <Text style={styles.title}>{task.title}</Text>
           {task.metadata.contextLabel ? (
@@ -86,10 +84,8 @@ const styles = StyleSheet.create({
   leftTick: {
     width: 18,
     height: 18,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#9D8CF5',
     marginRight: 10,
+    alignSelf: 'flex-start',
     opacity: 0.7,
   },
   content: {
