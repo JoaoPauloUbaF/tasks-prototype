@@ -196,6 +196,15 @@ Choose a target (iOS simulator / Android / Web), or scan the QR code with Expo G
 
 ---
 
+## To-do
+
+- Improve colors and contrast in dark mode (text/secondary text, metadata chips)
+- Migrate icons to SVG assets (e.g., react-native-svg) for sharper rendering across platforms
+- Fix and polish Web support (dropdown layering/backdrops, focus/hover states, keyboard navigation)
+- Drag-to-reorder with react-native-gesture-handler + Reanimated
+- Add unit tests for controller and store logic (filters, undo buffer)
+- Add E2E smoke tests (Detox or Playwright for web)
+
 ## Notes & future work
 
 - Drag-to-reorder: best implemented with `react-native-gesture-handler` + Reanimated for a smooth long-press drag. A keyboard-accessible fallback (Move up/down actions) can be added for screen readers.
