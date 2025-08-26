@@ -6,6 +6,8 @@
 
 https://github.com/user-attachments/assets/668b9cf4-6ff2-4355-b640-265f0d3e7e6f
 
+Development Process video: https://www.youtube.com/watch?v=jSDNzGXVtsE
+
 A mobile tasks prototype built with Expo Router and React Native. It focuses on a clean information hierarchy and fluid interactions:
 
 - Five bottom tabs (Home, My Work, Add Task, Insights, Profile)
