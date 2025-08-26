@@ -20,6 +20,7 @@ This document explains the architecture, important dependencies, and the core lo
 https://joaopauloubaf.github.io/tasks-prototype/
 
 Time report: https://wakatime.com/@4bfee3d0-b953-472e-b3d4-00685405a4c9/projects/oldlnqzxkv?start=2025-08-20&end=2025-08-26
+AI code assist log: CONVERSATION_LOG.md
 
 ## TL;DR
 
